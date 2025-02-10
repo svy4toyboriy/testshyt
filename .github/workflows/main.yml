@@ -1,0 +1,29 @@
+name: Golang CD # Название workflow (процесса автоматизации)
+
+on:
+  push:
+    branches: [ main ] # Триггер: запускать workflow при пуше в ветку main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Определение окружения: используется последняя версия Ubuntu
+
+    steps:
+      - name: Build the application # Шаг: Сборка приложения
+        run: |
+          cd ~/testshyt # Переход в директорию с проектом
+          go build -o myapp main.go # Сборка приложения
+
+      - name: Deploy using ssh # Шаг: Деплой с использованием SSH
+        uses: appleboy/ssh-action@master # Использование готового действия для SSH-подключения
+        with:
+          host: ${{ secrets.HOST }} # Хост (сервер) для подключения, берется из секретов Github
+          username: ${{ secrets.USERNAME }} # Имя пользователя для SSH, берется из секретов Github
+          key: ${{ secrets.PRIVATE_KEY }} # Приватный ключ для SSH, берется из секретов Github
+          port: 22 
+          script: |
+            cd ~/testshyt # Переход в директорию с проектом на сервере
+            git pull origin main # Вытягивание последних изменений из ветки main
+            git status
+            go mod tidy # Установка только продакшн-зависимостей
+            ./myapp & # Запуск приложения в фоновом режиме
