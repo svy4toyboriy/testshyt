@@ -3,7 +3,10 @@ package main
 import (
 	"botyra/internal/services"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv"
 	"log"
+	"os"
 )
 
 func main() {
@@ -13,7 +16,17 @@ func main() {
 }
 
 func run() error {
-	bot, err := tgbotapi.NewBotAPI("7594228625:AAFEI3IteO3hzic59HIF0W2TN5Q8buFmlK4")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Ошибка загрузки .env файла")
+	}
+
+	// Получаем значение переменной BOT_API_KEY
+	botAPIKey := os.Getenv("BOT_API_KEY")
+	if botAPIKey == "" {
+		log.Fatal("BOT_API_KEY не задан")
+	}
+	bot, err := tgbotapi.NewBotAPI(botAPIKey)
 	if err != nil {
 		log.Fatalf("Failed to create bot: %v", err)
 	}
