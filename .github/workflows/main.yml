@@ -24,4 +24,4 @@ jobs:
             git pull origin main # Вытягивание последних изменений из ветки main
             git status
             go mod tidy # Установка только продакшн-зависимостей
-            ./myapp & # Запуск приложения в фоновом режиме
+            screen -dmS myapp_session ./myapp
