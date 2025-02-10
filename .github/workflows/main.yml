@@ -12,11 +12,6 @@ jobs:
       - name: Checkout repository # Шаг: Клонирование репозитория
         uses: actions/checkout@v2
 
-      - name: Build the application # Шаг: Сборка приложения
-        run: |
-          cd testshyt # Переход в директорию с проектом
-          go build -o myapp main.go # Сборка приложения
-
       - name: Deploy using ssh # Шаг: Деплой с использованием SSH
         uses: appleboy/ssh-action@master # Использование готового действия для SSH-подключения
         with:
