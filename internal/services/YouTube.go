@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	apiKey    = "AIzaSyB3WVASAhSrMlUXQWT8dxdoY6x69aGT9W0"
+	apiKey    = "KEY"
 	searchURL = "https://www.googleapis.com/youtube/v3/search"
 )
 
